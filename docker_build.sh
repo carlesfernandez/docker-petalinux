@@ -4,8 +4,8 @@
 XILVER=${1:-2019.1}
 
 # Check SDK and petalinux installers exists
-SDK="resources/Xilinx-SDK-v${XILVER}.tgz"
-PLNX="resources/petalinux-v${XILVER}-final-installer.run"
+SDK="./installers/resources/Xilinx-SDK-v${XILVER}.tgz"
+PLNX="./installers/resources/petalinux-v${XILVER}-final-installer.run"
 if [ ! -f "$SDK" -o ! -f "$PLNX" ] ; then
 	echo "$SDK or $PLNX installers not found"
 	exit 1
@@ -18,7 +18,7 @@ case $PYTHONV in
 	*) PYTHONHTTP="SimpleHTTPServer" ;;
 esac
 if ! ps -fC python | grep "$PYTHONHTTP" > /dev/null ; then
-	python -m "$PYTHONHTTP" &
+	python -m "$PYTHONHTTP"  8000 --directory=./installers/  &
 	HTTPID=$!
 	echo "HTTP Server started as PID $HTTPID"
 	trap "kill $HTTPID" EXIT KILL QUIT SEGV INT HUP TERM ERR

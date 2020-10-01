@@ -17,7 +17,7 @@ ARG PETALINUX_BASE=petalinux-v${XILVER}-final
 ARG PETALINUX_INSTALLER=${PETALINUX_BASE}-installer.run
 
 # The HTTP server to retrieve the files from. It should be accessible by the Docker daemon as ${HTTP_SERV}/${SDK_INSTALLER}
-ARG HTTP_SERV=http://172.17.0.1:8000/resources
+ARG HTTP_SERV=http://10.1.3.17:8000/resources
 
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \ 
 	python3.4 \
@@ -89,22 +89,23 @@ USER petalinux
 
 # Install SDK
 #COPY resources/install_config_sdk.txt .
-RUN mkdir t && cd t && wget -q ${HTTP_SERV}/install_config_sdk.txt \
-	&& wget -q -O - ${HTTP_SERV}/${SDK_INSTALLER} | tar -xz \
-	&& ./xsetup -b Install -a XilinxEULA,3rdPartyEULA,WebTalkTerms -c install_config_sdk.txt \
+RUN mkdir -p t && cd t && wget -q ${HTTP_SERV}/install_config_sdk.txt \
+        && wget -q -O - ${HTTP_SERV}/${SDK_INSTALLER} | tar -xz \
+        && ./xsetup -b Install -a XilinxEULA,3rdPartyEULA,WebTalkTerms -c install_config_sdk.txt \
 	&& cd .. && rm -rf t \
 	&& echo "source /opt/Xilinx/SDK/${XILVER}/settings64.sh" >> ~/.bashrc \
 	&& echo "source /opt/${PETALINUX_BASE}/settings.sh" >> ~/.bashrc
 
 # Install PetaLinux
-RUN chown -R petalinux:petalinux . \
-	&& wget -q ${HTTP_SERV}/${PETALINUX_INSTALLER} \
-	&& chmod a+x ${PETALINUX_INSTALLER} \
+RUN echo "" | sudo -S chown -R petalinux:petalinux . \
+        && wget -q ${HTTP_SERV}/${PETALINUX_INSTALLER} \
+        && chmod a+x ${PETALINUX_INSTALLER} \
 	&& SKIP_LICENSE=y ./${PETALINUX_FILE}${PETALINUX_INSTALLER} /opt/${PETALINUX_BASE} \
 	&& rm -f ./${PETALINUX_INSTALLER} \
 	&& rm -f petalinux_installation_log
 
 # Source settings at login
+
 USER root
-RUN echo "source /opt/Xilinx/SDK/${XILVER}/settings64.sh" >> /etc/profile \
-	&& echo "source /opt/${PETALINUX_BASE}/settings.sh" >> /etc/profile
+RUN echo ". /opt/Xilinx/SDK/${XILVER}/settings64.sh" >> /etc/profile \
+	&& echo ". /opt/${PETALINUX_BASE}/settings.sh" >> /etc/profile
