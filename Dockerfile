@@ -63,7 +63,14 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
     gzip \
     vim \
     libgtk2.0-0 \
+    nano \
+    && add-apt-repository ppa:deadsnakes/ppa && apt update \
+    && apt-get install -y python3.6 && update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1 \
     && apt-get autoremove --purge && apt-get autoclean
+
+# Install the repo tool to handle git submodules (meta layers) comfortably.
+ADD https://storage.googleapis.com/git-repo-downloads/repo /usr/local/bin/
+RUN chmod 755 /usr/local/bin/repo
 
 RUN echo "%sudo ALL=(ALL:ALL) ALL" >> /etc/sudoers \
     && echo "%sudo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
