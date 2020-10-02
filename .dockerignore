@@ -1,2 +1,10 @@
 resources/**
 installers/**
+etc/**
+docker-build.sh
+LICENSE
+README.md
+SDK_install.png
+.gitignore
+.git
+.cache
