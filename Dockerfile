@@ -108,4 +108,6 @@ RUN echo "" | sudo -S chown -R petalinux:petalinux . \
 USER root
 RUN echo ". /opt/Xilinx/SDK/${XILVER}/settings64.sh" >> /etc/profile \
     && echo ". /opt/${PETALINUX_BASE}/settings.sh" >> /etc/profile \
-	&& echo ". /etc/profile" >> /root/.profile
+    && echo ". /etc/profile" >> /root/.profile
+
+ENTRYPOINT ["/bin/sh", "-l"]
