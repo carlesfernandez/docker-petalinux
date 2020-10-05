@@ -113,7 +113,7 @@ RUN echo "" | sudo -S chown -R petalinux:petalinux . \
     && rm -f petalinux_installation_log
 
 # If 2018.3, apply perf patch
-RUN if [ "$XILVER" = "2018.3"] ; then
+RUN if [ "$XILVER" = "2018.3"] ; then \
     sed -i 's/virtual\/kernel\:do\_patch/virtual\/kernel\:do\_shared\_workdir/g' /opt/petalinux-v2018.3-final/components/yocto/source/arm/layers/core/meta/classes/kernelsrc.bbclass ; \
     fi
 
