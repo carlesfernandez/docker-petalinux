@@ -115,3 +115,18 @@ will fail because `petalinux-build` is not part of the path. But you can create 
 then:
 
     user@host:/path/to/petalinux_project$ /path/to/petalin.sh ./mbuild.sh
+
+
+If you want to use `repo`, you will need to switch to Python 3.6, and then
+switch back to Python2.7 after using it:
+
+```
+sudo update-alternatives --config python
+```
+
+Select Python 3.6, and then use `repo` (`repo init ...`, `repo sync`). When finished, switch back to Python 2.7
+in order to use the `petalinux-*` commands:
+
+```
+sudo update-alternatives --auto python
+```

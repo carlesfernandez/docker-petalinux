@@ -64,9 +64,10 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
     vim \
     libgtk2.0-0 \
     nano \
+    && update-alternatives --install /usr/bin/python python /usr/bin/python2.7 2 \
     && add-apt-repository ppa:deadsnakes/ppa && apt update \
     && apt-get install -y python3.6 && update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1 \
-    && apt-get autoremove --purge && apt-get autoclean
+    && apt-get autoremove --purge && apt-get autoclean && update-alternatives --auto python
 
 # Install the repo tool to handle git submodules (meta layers) comfortably.
 ADD https://storage.googleapis.com/git-repo-downloads/repo /usr/local/bin/
@@ -110,6 +111,11 @@ RUN echo "" | sudo -S chown -R petalinux:petalinux . \
     && SKIP_LICENSE=y ./${PETALINUX_FILE}${PETALINUX_INSTALLER} /opt/${PETALINUX_BASE} \
     && rm -f ./${PETALINUX_INSTALLER} \
     && rm -f petalinux_installation_log
+
+# If 2018.3, apply perf patch
+RUN if [ "$XILVER" = "2018.3"] ; then
+    sed -i 's/virtual\/kernel\:do\_patch/virtual\/kernel\:do\_shared\_workdir/g' /opt/petalinux-v2018.3-final/components/yocto/source/arm/layers/core/meta/classes/kernelsrc.bbclass ; \
+    fi
 
 # Source settings at login
 USER root
