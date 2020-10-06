@@ -100,9 +100,9 @@ USER petalinux
 RUN mkdir -p t && cd t && wget -q ${HTTP_SERV}/install_config_sdk.txt \
     && wget -q -O - ${HTTP_SERV}/${SDK_INSTALLER} | tar -xz \
     && ./xsetup -b Install -a XilinxEULA,3rdPartyEULA,WebTalkTerms -c install_config_sdk.txt \
-    && cd .. && rm -rf t \
-    && echo "source /opt/Xilinx/SDK/${XILVER}/settings64.sh" >> ~/.bashrc \
-    && echo "source /opt/${PETALINUX_BASE}/settings.sh" >> ~/.bashrc
+    && cd .. && rm -rf t
+#    && echo "source /opt/Xilinx/SDK/${XILVER}/settings64.sh" >> ~/.bashrc
+#    && echo "source /opt/${PETALINUX_BASE}/settings.sh" >> ~/.bashrc
 
 # Install PetaLinux
 RUN echo "" | sudo -S chown -R petalinux:petalinux . \
@@ -119,8 +119,8 @@ RUN if [ "$XILVER" = "2018.3"] ; then \
 
 # Source settings at login
 USER root
-RUN echo ". /opt/Xilinx/SDK/${XILVER}/settings64.sh" >> /etc/profile \
-    && echo ". /opt/${PETALINUX_BASE}/settings.sh" >> /etc/profile \
+# RUN echo ". /opt/Xilinx/SDK/${XILVER}/settings64.sh" >> /etc/profile
+RUN echo ". /opt/${PETALINUX_BASE}/settings.sh" >> /etc/profile \
     && echo ". /etc/profile" >> /root/.profile
 
 ENTRYPOINT ["/bin/sh", "-l"]
