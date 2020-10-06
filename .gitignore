@@ -3,4 +3,3 @@ resources/*.bin
 resources/*.tar
 resources/*.tgz
 resources/*.tar.gz
-installers/*

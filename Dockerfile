@@ -1,16 +1,11 @@
 FROM ubuntu:16.04
 
 # The Xilinx toolchain version
-ARG XILVER=2019.1
-
-# The SDK installer *GENERATED FROM THE WebInstall WITH OPTION "Extract to directory" (and zip)*
-# SDK will be installed in /opt/Xilinx/SDK/${XILVER}
-# File is expected in the "resources" subdirectory
-ARG SDK_INSTALLER=Xilinx-SDK-v${XILVER}.tgz
+ARG XILVER=2018.3
 
 # The PetaLinux base. We expect ${PETALINUX_BASE}-installer.run to be the patched installer.
 # PetaLinux will be installed in /opt/${PETALINX_BASE}
-# File is expected in the "resources" subdirectory
+# File is expected in the "installers/resources" subdirectory
 ARG PETALINUX_BASE=petalinux-v${XILVER}-final
 
 # The PetaLinux runnable installer
@@ -95,15 +90,6 @@ RUN useradd -m -G dialout,sudo -p '$6$wiu9XEXx$ITRrMySAw1SXesQcP.Bm3Su2CuaByujc6
 WORKDIR /opt
 USER petalinux
 
-# Install SDK
-#COPY resources/install_config_sdk.txt .
-RUN mkdir -p t && cd t && wget -q ${HTTP_SERV}/install_config_sdk.txt \
-    && wget -q -O - ${HTTP_SERV}/${SDK_INSTALLER} | tar -xz \
-    && ./xsetup -b Install -a XilinxEULA,3rdPartyEULA,WebTalkTerms -c install_config_sdk.txt \
-    && cd .. && rm -rf t
-#    && echo "source /opt/Xilinx/SDK/${XILVER}/settings64.sh" >> ~/.bashrc
-#    && echo "source /opt/${PETALINUX_BASE}/settings.sh" >> ~/.bashrc
-
 # Install PetaLinux
 RUN echo "" | sudo -S chown -R petalinux:petalinux . \
     && wget -q ${HTTP_SERV}/${PETALINUX_INSTALLER} \
@@ -112,15 +98,14 @@ RUN echo "" | sudo -S chown -R petalinux:petalinux . \
     && rm -f ./${PETALINUX_INSTALLER} \
     && rm -f petalinux_installation_log
 
-# If 2018.3, apply perf patch
-RUN if [ "$XILVER" = "2018.3"] ; then \
-    sed -i 's/virtual\/kernel\:do\_patch/virtual\/kernel\:do\_shared\_workdir/g' /opt/petalinux-v2018.3-final/components/yocto/source/arm/layers/core/meta/classes/kernelsrc.bbclass ; \
-    fi
-
 # Source settings at login
 USER root
-# RUN echo ". /opt/Xilinx/SDK/${XILVER}/settings64.sh" >> /etc/profile
 RUN echo ". /opt/${PETALINUX_BASE}/settings.sh" >> /etc/profile \
     && echo ". /etc/profile" >> /root/.profile
+
+# If 2018.3, apply perf patch
+RUN if [ "$XILVER" = "2018.3" ] ; then \
+    sed -i 's/virtual\/kernel\:do\_patch/virtual\/kernel\:do\_shared\_workdir/g' /opt/petalinux-v2018.3-final/components/yocto/source/arm/layers/core/meta/classes/kernelsrc.bbclass ; \
+    fi
 
 ENTRYPOINT ["/bin/sh", "-l"]

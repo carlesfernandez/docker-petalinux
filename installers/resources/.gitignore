@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# SPDX-FileCopyrightText: 2020 Carles Fernandez-Prades <carles.fernandez@cttc.es>
+# Ignore everything in this directory
+*
+# Except this file
+!.gitignore

@@ -1,13 +1,12 @@
 #!/bin/bash
 
-# Default version 2019.1
-XILVER=${1:-2019.1}
+# Default version 2018.3
+XILVER=${1:-2018.3}
 
-# Check SDK and petalinux installers exists
-SDK="./installers/resources/Xilinx-SDK-v${XILVER}.tgz"
+# Check if the petalinux installer exists
 PLNX="./installers/resources/petalinux-v${XILVER}-final-installer.run"
-if [ ! -f "$SDK" -o ! -f "$PLNX" ] ; then
-    echo "$SDK or $PLNX installers not found"
+if [ ! -f "$PLNX" ] ; then
+    echo "$PLNX installer not found"
     exit 1
 fi
 
