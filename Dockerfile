@@ -11,9 +11,6 @@ ARG PETALINUX_BASE=petalinux-v${XILVER}-final
 # The PetaLinux runnable installer
 ARG PETALINUX_INSTALLER=${PETALINUX_BASE}-installer.run
 
-# The HTTP server to retrieve the files from. It should be accessible by the Docker daemon as ${HTTP_SERV}/${SDK_INSTALLER}
-ARG HTTP_SERV=http://10.1.3.17:8000/resources
-
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
     python3.4 \
     tofrodos \
@@ -89,6 +86,9 @@ RUN useradd -m -G dialout,sudo -p '$6$wiu9XEXx$ITRrMySAw1SXesQcP.Bm3Su2CuaByujc6
 # Install under /opt, with user petalinux
 WORKDIR /opt
 USER petalinux
+
+# The HTTP server to retrieve the files from.
+ARG HTTP_SERV=http://172.17.0.1:8000/resources
 
 # Install PetaLinux
 RUN echo "" | sudo -S chown -R petalinux:petalinux . \

@@ -54,7 +54,7 @@ Several arguments can be provided to customize the build, with `--build-arg`:
 <br/>Defaults to `${PETALINUX_BASE}-installer.run`
 
 * `HTTP_SERV` is the HTTP server serving both SDK and PetaLinux installer.
-<br/>Defaults to `http://10.1.3.17:8000/resources`.
+<br/>Defaults to `http://172.17.0.1:8000/resources`.
 
 You can fully customize the installation by manually running e.g.:
 
