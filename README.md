@@ -9,7 +9,7 @@ last version handled by this release_.
 > Inspired by
 > [docker-petalinux](https://github.com/matthieu-labas/docker-petalinux),
 > [docker-xilinx-petalinux-desktop](https://github.com/JamesAnthonyLow/docker-xilinx-petalinux-desktop)
-> (and some of [petalinux-docker](https://github.com/xaljer/petalinux-docker)).
+> and [petalinux-docker](https://github.com/xaljer/petalinux-docker).
 
 ## Prepare installer
 
