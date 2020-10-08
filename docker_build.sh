@@ -4,7 +4,7 @@
 XILVER=${1:-2018.3}
 
 # Check if the petalinux installer exists
-PLNX="./installers/resources/petalinux-v${XILVER}-final-installer.run"
+PLNX="resources/petalinux-v${XILVER}-final-installer.run"
 if [ ! -f "$PLNX" ] ; then
     echo "$PLNX installer not found"
     exit 1
@@ -17,7 +17,7 @@ case $PYTHONV in
     *) PYTHONHTTP="SimpleHTTPServer" ;;
 esac
 if ! ps -fC python | grep "$PYTHONHTTP" > /dev/null ; then
-    python -m "$PYTHONHTTP"  8000 --directory=./installers/  &
+    python -m "$PYTHONHTTP" &
     HTTPID=$!
     echo "HTTP Server started as PID $HTTPID"
     trap "kill $HTTPID" EXIT KILL QUIT SEGV INT HUP TERM ERR

@@ -1,5 +1,4 @@
 resources/**
-installers/**
 etc/**
 docker-build.sh
 LICENSE

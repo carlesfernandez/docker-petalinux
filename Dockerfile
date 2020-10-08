@@ -5,7 +5,7 @@ ARG XILVER=2018.3
 
 # The PetaLinux base. We expect ${PETALINUX_BASE}-installer.run to be the patched installer.
 # PetaLinux will be installed in /opt/${PETALINX_BASE}
-# File is expected in the "installers/resources" subdirectory
+# File is expected in the "./resources" subdirectory
 ARG PETALINUX_BASE=petalinux-v${XILVER}-final
 
 # The PetaLinux runnable installer
