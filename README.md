@@ -4,7 +4,7 @@ A somehow generic Xilinx PetaLinux docker file, using Ubuntu (though some tweaks
 
 It was successfully tested with version `2018.3` and `2019.1`, *which is the last version handled by this release*.
 
->Inspired by [docker-xilinx-petalinux-desktop](https://github.com/JamesAnthonyLow/docker-xilinx-petalinux-desktop) (and some of [petalinux-docker](https://github.com/xaljer/petalinux-docker)).
+>Inspired by [docker-petalinux](https://github.com/matthieu-labas/docker-petalinux), [docker-xilinx-petalinux-desktop](https://github.com/JamesAnthonyLow/docker-xilinx-petalinux-desktop) (and some of [petalinux-docker](https://github.com/xaljer/petalinux-docker)).
 
 ## Prepare installer
 
@@ -38,7 +38,7 @@ The `docker_build.sh` will automatically spawn a simple HTTP server to serve the
 
 The image takes a long time to build (up to a couple hours, depending on disk space and system use), but should succeed.
 
-It weighs around 15 GB.
+It weights around 15 GB.
 
 ### Parameters
 
