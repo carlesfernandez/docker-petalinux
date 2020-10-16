@@ -92,7 +92,7 @@ When run without arguments, a shell will spawn, _with PetaLinux `settings.sh`
 already sourced_, so you can directly execute `petalinux-*` commands.
 
     user@host:/path/to/petalinux_project$ /path/to/petalin.sh
-    petalinux@a3ce6f8c:/path/to/petalinux_project$ petalinux-build
+    petalinux@a3ce6f8c:/path/to/petalinux_project# petalinux-build
 
 Otherwise, the arguments will be executed as a command.
 
