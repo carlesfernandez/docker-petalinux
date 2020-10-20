@@ -22,8 +22,6 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
     make \
     net-tools \
     libncurses5-dev \
-    tftpd \
-    tftp-hpa \
     zlib1g-dev:i386 \
     libssl-dev \
     flex \
