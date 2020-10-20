@@ -56,6 +56,7 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
     vim \
     libgtk2.0-0 \
     nano \
+    tftpd-hpa \
     && update-alternatives --install /usr/bin/python python /usr/bin/python2.7 2 \
     && add-apt-repository ppa:deadsnakes/ppa && apt update \
     && apt-get install -y python3.6 && update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1 \
@@ -82,6 +83,9 @@ RUN useradd -m -G dialout,sudo -p '$6$wiu9XEXx$ITRrMySAw1SXesQcP.Bm3Su2CuaByujc6
     && mkdir /opt/${PETALINUX_BASE} \
     && chmod 755 /opt/${PETALINUX_BASE} \
     && chown petalinux:petalinux /opt/${PETALINUX_BASE}
+
+# Set folder for tftp server
+RUN mkdir -p /tftpboot && chmod 666 /tftpboot
 
 # Install under /opt, with user petalinux
 WORKDIR /opt
