@@ -83,7 +83,10 @@ RUN useradd -m -G dialout,sudo -p '$6$wiu9XEXx$ITRrMySAw1SXesQcP.Bm3Su2CuaByujc6
     && chown petalinux:petalinux /opt/${PETALINUX_BASE}
 
 # Set folder for tftp server
-RUN mkdir -p /tftpboot && chmod 666 /tftpboot
+RUN mkdir -p /tftpboot && chmod 666 /tftpboot \
+    && sed -i 's/TFTP\_USERNAME\=\"tftp\"/TFTP\_USERNAME\=\"petalinux\"/g' /etc/default/tftpd-hpa \
+    && sed -i 's/var\/lib\/tftpboot/tftpboot/g' /etc/default/tftpd-hpa \
+    && sed -i 's/secure/secure \-\-create/g' /etc/default/tftpd-hpa
 
 # Install under /opt, with user petalinux
 WORKDIR /opt
@@ -103,11 +106,14 @@ RUN echo "" | sudo -S chown -R petalinux:petalinux . \
 # Source settings at login
 USER root
 RUN echo ". /opt/${PETALINUX_BASE}/settings.sh" >> /etc/profile \
+    && echo "/usr/sbin/in.tftpd --foreground --listen --address [::]:69 --secure /tftpboot" >> /etc/profile \
     && echo ". /etc/profile" >> /root/.profile
 
 # If 2018.3, apply perf patch
 RUN if [ "$XILVER" = "2018.3" ] ; then \
     sed -i 's/virtual\/kernel\:do\_patch/virtual\/kernel\:do\_shared\_workdir/g' /opt/petalinux-v2018.3-final/components/yocto/source/arm/layers/core/meta/classes/kernelsrc.bbclass ; \
     fi
+
+EXPOSE 69/udp
 
 ENTRYPOINT ["/bin/sh", "-l"]
