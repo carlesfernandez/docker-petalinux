@@ -66,7 +66,8 @@ Run:
     ./docker_build.sh <VERSION>
 
 > `<VERSION>` can be `2018.3` or `2019.1`, ... Corresponding petalinux installer
-> is expected to be found in a `./resources` directory.
+> is expected to be found in a `./resources` directory. The default for
+> `<VERSION>`, if not specified, is `2018.3`.
 
 The `docker_build.sh` will automatically spawn a simple HTTP server to serve the
 installer instead of copying it to the docker images (especially pushing them to
@@ -97,7 +98,7 @@ Several arguments can be provided to customize the build, with `--build-arg`:
   <br/>Defaults to `http://172.17.0.1:8000/resources`.
 
 - `XXXX_XXXX` is the identifier of the Vivado Installer (which name is
-  `Xilinx_Vivado_SDK_${XILVER}_${XXXX_XXXX}.tar.gz`). <br/>Default to
+  `Xilinx_Vivado_SDK_${XILVER}_${XXXX_XXXX}.tar.gz`). <br/>Defaults to
   `1207_2324`.
 
 You can fully customize the installation by manually running e.g.:
