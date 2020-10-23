@@ -116,7 +116,7 @@ RUN echo "" | sudo -S chown -R petalinux:petalinux . \
 
 # Install Vivado
 # Files are expected in the "./resources" subdirectory
-ENV XLNX_VIVADO_OFFLINE_INSTALLER=Xilinx_Vivado_SDK_${XILVER}_${XXXX-XXXX}.tar.gz
+ENV XLNX_VIVADO_OFFLINE_INSTALLER=Xilinx_Vivado_SDK_${XILVER}_${XXXX_XXXX}.tar.gz
 ENV XLNX_VIVADO_BATCH_CONFIG_FILE=install_config.txt
 RUN mkdir -p /opt/Xilinx/tmp \
     && cd /opt/Xilinx/tmp \
