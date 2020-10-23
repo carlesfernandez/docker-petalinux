@@ -1,7 +1,7 @@
 # docker-petalinux
 
-A somehow generic Xilinx PetaLinux docker file, using Ubuntu (though some tweaks
-might be possible for Windows).
+A somehow generic Xilinx PetaLinux & Vivado docker file, using Ubuntu (though
+some tweaks might be possible for Windows).
 
 It was successfully tested with version `2018.3` and `2019.1`, _which is the
 last version handled by this release_.
@@ -11,10 +11,12 @@ last version handled by this release_.
 > [docker-xilinx-petalinux-desktop](https://github.com/JamesAnthonyLow/docker-xilinx-petalinux-desktop)
 > and [petalinux-docker](https://github.com/xaljer/petalinux-docker).
 
-## Prepare installer
+## Prepare installers
 
-The PetaLinux Installer is to be downloaded from
-[Xilinx website](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-design-tools.html).
+### Petalinux installer
+
+The PetaLinux Installer is to be downloaded from the
+[Xilinx's Embedded Design Tools website](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-design-tools.html).
 It needs to be prepared for unattended installation.
 
 Run the installer and save the `petalinux-vXXX.X-final-installer.run` file in
@@ -34,6 +36,19 @@ Run:
 
 (that will patch the installer _in place_).
 
+### Vivado installer
+
+The Vivado is to be downloaded from the
+[Xilinx's Vivado Design Tools website](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools.html).
+Go there and choose the All OS installer Single-File Download (TAR/GZIP).
+
+The file is called something like `Xilinx_Vivado_SDK_2018.3_XXXX_XXXX.tar.gz`.
+The default value for `XXXX-XXXX` is `1207_2324`, if the numbers differ you can
+change them in the Dockerfile or passing an argument in the `docker_build.sh`
+script.
+
+Please place this file in the `./resources/` folder.
+
 ## Build the image
 
 Run:
@@ -50,7 +65,7 @@ the Docker daemon. Big space/time saver).
 The image takes a long time to build (up to a couple hours, depending on disk
 space and system use), but should succeed.
 
-It weights around 15 GB.
+It weights around 45 GB.
 
 ### Parameters
 
@@ -71,6 +86,10 @@ Several arguments can be provided to customize the build, with `--build-arg`:
 - `HTTP_SERV` is the HTTP server serving both SDK and PetaLinux installer.
   <br/>Defaults to `http://172.17.0.1:8000/resources`.
 
+- `XXXX_XXXX` is the identifier of the Vivado Installer (which name is
+  `Xilinx_Vivado_SDK_${XILVER}_${XXXX_XXXX}.tar.gz`). <br/>Default to
+  `1207_2324`.
+
 You can fully customize the installation by manually running e.g.:
 
     docker build . -t petalinux:2018.3 \
@@ -89,12 +108,16 @@ project directory. It basically is a shortcut to:
     docker run -ti -v "$PWD":"$PWD" -w "$PWD" --rm -u petalinux petalinux:<latest version> $@
 
 When run without arguments, a shell will spawn, _with PetaLinux `settings.sh`
-already sourced_, so you can directly execute `petalinux-*` commands.
+and Vivado `settings64.sh` already sourced_, so you can directly execute
+`petalinux-*` commands and Vivado.
 
     user@host:/path/to/petalinux_project$ /path/to/petalin.sh
-    petalinux@a3ce6f8c:/path/to/petalinux_project# petalinux-build
+    petalinux@host:/path/to/petalinux_project# petalinux-build
+    petalinux@host:/path/to/petalinux_project# vivado
 
 Otherwise, the arguments will be executed as a command.
+
+For Vivado, you might need some tweaking to get the graphical interface working.
 
 If you want to use `repo`, you will need to switch to Python 3.6, and then
 switch back to Python2.7 after using it:

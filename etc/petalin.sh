@@ -5,7 +5,7 @@ echo "Starting petalinux:$latest"
 mkdir -p $PWD/tftpboot
 if [ $GENIUX_MIRROR_PATH ]
     then
-        docker run -ti -v "$PWD":"$PWD" -v $GENIUX_MIRROR_PATH:/source_mirror -v "$PWD/tftpboot":/tftpboot -w "$PWD" --rm -u petalinux petalinux:$latest $@
+        docker run -ti -e DISPLAY=$DISPLAY --net="host" -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME/.Xauthority:/home/root/.Xauthority -v "$PWD":"$PWD" -v $GENIUX_MIRROR_PATH:/source_mirror -v "$PWD/tftpboot":/tftpboot -w "$PWD" --rm -u petalinux petalinux:$latest $@
     else
-        docker run -ti -v "$PWD":"$PWD" -v "$PWD/tftpboot":/tftpboot -w "$PWD" --rm -u petalinux petalinux:$latest $@
+        docker run -ti -e DISPLAY=$DISPLAY --net="host" -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME/.Xauthority:/home/root/.Xauthority -v "$PWD":"$PWD" -v "$PWD/tftpboot":/tftpboot -w "$PWD" --rm -u petalinux petalinux:$latest $@
 fi

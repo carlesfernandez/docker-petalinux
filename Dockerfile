@@ -2,6 +2,7 @@ FROM ubuntu:16.04
 
 # The Xilinx toolchain version
 ARG XILVER=2018.3
+ARG XXXX_XXXX=1207_2324
 
 # The PetaLinux base. We expect ${PETALINUX_BASE}-installer.run to be the patched installer.
 # PetaLinux will be installed in /opt/${PETALINX_BASE}
@@ -11,7 +12,7 @@ ARG PETALINUX_BASE=petalinux-v${XILVER}-final
 # The PetaLinux runnable installer
 ARG PETALINUX_INSTALLER=${PETALINUX_BASE}-installer.run
 
-RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
+RUN dpkg --add-architecture i386 && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     python3.4 \
     tofrodos \
     iproute2 \
@@ -35,6 +36,7 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
     xterm \
     autoconf \
     libtool \
+    libtool-bin \
     tar \
     unzip \
     texinfo \
@@ -53,8 +55,17 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
     gzip \
     vim \
     libgtk2.0-0 \
+    libgtk2.0-dev \
     nano \
     tftpd-hpa \
+    update-inetd \
+    python3-gi \
+    less \
+    lsb-release \
+    fakeroot \
+    rsync \
+    xorg \
+    dos2unix \
     && update-alternatives --install /usr/bin/python python /usr/bin/python2.7 2 \
     && add-apt-repository ppa:deadsnakes/ppa && apt update \
     && apt-get install -y python3.6 && update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1 \
@@ -103,10 +114,31 @@ RUN echo "" | sudo -S chown -R petalinux:petalinux . \
     && rm -f ./${PETALINUX_INSTALLER} \
     && rm -f petalinux_installation_log
 
+# Install Vivado
+# Files are expected in the "./resources" subdirectory
+ENV XLNX_VIVADO_OFFLINE_INSTALLER=Xilinx_Vivado_SDK_${XILVER}_${XXXX-XXXX}.tar.gz
+ENV XLNX_VIVADO_BATCH_CONFIG_FILE=install_config.txt
+RUN mkdir -p /opt/Xilinx/tmp \
+    && cd /opt/Xilinx/tmp \
+    && wget -q ${HTTP_SERV}/$XLNX_VIVADO_BATCH_CONFIG_FILE \
+    && wget -q ${HTTP_SERV}/$XLNX_VIVADO_OFFLINE_INSTALLER \
+    && cat $XLNX_VIVADO_BATCH_CONFIG_FILE \
+    && tar -zxf $XLNX_VIVADO_OFFLINE_INSTALLER && ls -al \
+    && mv $XLNX_VIVADO_BATCH_CONFIG_FILE Xilinx_Vivado_SDK_${XILVER}_${XXXX-XXXX}/ \
+    && cd Xilinx_Vivado_SDK_${XILVER}_${XXXX-XXXX} \
+    && chmod a+x xsetup \
+    && ./xsetup \
+       --agree XilinxEULA,3rdPartyEULA,WebTalkTerms \
+       --config $XLNX_VIVADO_BATCH_CONFIG_FILE \
+       --batch INSTALL \
+    && cd $HOME_DIR \
+    && rm -rf /opt/Xilinx/tmp
+
 # Source settings at login
 USER root
-RUN echo ". /opt/${PETALINUX_BASE}/settings.sh" >> /etc/profile \
-    && echo "/usr/sbin/in.tftpd --foreground --listen --address [::]:69 --secure /tftpboot" >> /etc/profile \
+RUN echo "/usr/sbin/in.tftpd --foreground --listen --address [::]:69 --secure /tftpboot" >> /etc/profile \
+    && echo ". /opt/${PETALINUX_BASE}/settings.sh" >> /etc/profile \
+    && echo ". /opt/Xilinx/Vivado/${XILVER}/settings64.sh" >> /etc/profile \
     && echo ". /etc/profile" >> /root/.profile
 
 # If 2018.3, apply perf patch
@@ -115,5 +147,11 @@ RUN if [ "$XILVER" = "2018.3" ] ; then \
     fi
 
 EXPOSE 69/udp
+
+USER petalinux
+
+RUN export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/Xilinx/Vivado/${XILVER}/lib/lnx64.o/
+
+# incorporate Vivado license file or ENV LM_LICENSE_SERVER=portNum@ipAddrOfLicenseServer
 
 ENTRYPOINT ["/bin/sh", "-l"]
