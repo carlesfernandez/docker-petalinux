@@ -124,8 +124,8 @@ RUN mkdir -p /opt/Xilinx/tmp \
     && wget -q ${HTTP_SERV}/$XLNX_VIVADO_OFFLINE_INSTALLER \
     && cat $XLNX_VIVADO_BATCH_CONFIG_FILE \
     && tar -zxf $XLNX_VIVADO_OFFLINE_INSTALLER && ls -al \
-    && mv $XLNX_VIVADO_BATCH_CONFIG_FILE Xilinx_Vivado_SDK_${XILVER}_${XXXX-XXXX}/ \
-    && cd Xilinx_Vivado_SDK_${XILVER}_${XXXX-XXXX} \
+    && mv $XLNX_VIVADO_BATCH_CONFIG_FILE Xilinx_Vivado_SDK_${XILVER}_${XXXX_XXXX}/ \
+    && cd Xilinx_Vivado_SDK_${XILVER}_${XXXX_XXXX} \
     && chmod a+x xsetup \
     && ./xsetup \
        --agree XilinxEULA,3rdPartyEULA,WebTalkTerms \
