@@ -43,7 +43,7 @@ The Vivado is to be downloaded from the
 Go there and choose the All OS installer Single-File Download (TAR/GZIP).
 
 The file is called something like `Xilinx_Vivado_SDK_2018.3_XXXX_XXXX.tar.gz`.
-The default value for `XXXX-XXXX` is `1207_2324`, if the numbers differ you can
+The default value for `XXXX_XXXX` is `1207_2324`, if the numbers differ you can
 change them in the Dockerfile or passing an argument in the `docker_build.sh`
 script.
 
