@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2020, Carles Fernandez-Prades <carles.fernandez@cttc.es>
+# SPDX-License-Identifier: MIT
+
 FROM ubuntu:16.04
 
 # The Xilinx toolchain version

@@ -1,3 +1,13 @@
+<!-- prettier-ignore-start -->
+[comment]: # (
+SPDX-License-Identifier: MIT
+)
+
+[comment]: # (
+SPDX-FileCopyrightText: 2020 Carles Fernandez-Prades <carles.fernandez@cttc.es>
+)
+<!-- prettier-ignore-end -->
+
 # docker-petalinux
 
 A somehow generic Xilinx PetaLinux & Vivado docker file, using Ubuntu (though
@@ -115,9 +125,13 @@ and Vivado `settings64.sh` already sourced_, so you can directly execute
     petalinux@host:/path/to/petalinux_project# petalinux-build
     petalinux@host:/path/to/petalinux_project# vivado
 
-Otherwise, the arguments will be executed as a command.
+Otherwise, the arguments will be executed as a command. Example:
+
+    user@host:/path/to/petalinux_project$ /path/to/petalin.sh \
+    "petalinux-create -t project --template zynq --name myproject"
 
 For Vivado, you might need some tweaking to get the graphical interface working.
+See section down below.
 
 If you want to use `repo`, you will need to switch to Python 3.6, and then
 switch back to Python2.7 after using it:
@@ -134,11 +148,6 @@ Select Python 3.6 (option number 2), and then use `repo` (`repo init ...`,
 
 There are some steps on your side if you want to make use of Vivado's graphical
 interface before running the Docker container.
-
-- If you are accessing remotely to the machine running the Docker container, you
-  need to enable trusted X11 forwarding with the `-Y` flag:
-
-      $ ssh user@host -Y
 
 - If your local machine is running Linux, adjust the permission of the X server
   host:
@@ -159,5 +168,15 @@ interface before running the Docker container.
   - Then, in the host machine:
 
          $ xhost + 127.0.0.1
+
+- If you are accessing remotely to the machine running the Docker container via
+  ssh, you need to enable trusted X11 forwarding with the `-Y` flag:
+
+      $ ssh user@host -Y
+
+Now you can try it:
+
+    user@host:/path/to/petalinux_project$ /path/to/petalin.sh
+    petalinux@host:/path/to/petalinux_project# vivado
 
 Enjoy!

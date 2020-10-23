@@ -1,4 +1,7 @@
 #!/bin/bash
+# SPDX-FileCopyrightText: 2020, Carles Fernandez-Prades <carles.fernandez@cttc.es>
+# SPDX-License-Identifier: MIT
+
 PLXI="$1"
 [ ! -f "$PLXI" ] && echo "Cannot find $PLXI" && exit 1
 # No patching necessary for v >= 2019.2 (installer accepts --skip-license or SKIP_LICENCE=y
