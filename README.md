@@ -129,3 +129,35 @@ Select Python 3.6 (option number 2), and then use `repo` (`repo init ...`,
 `petalinux-*` commands:
 
     # sudo update-alternatives --auto python
+
+## Using Vivado graphical interface
+
+There are some steps on your side if you want to make use of Vivado's graphical
+interface before running the Docker container.
+
+- If you are accessing remotely to the machine running the Docker container, you
+  need to enable trusted X11 forwarding with the `-Y` flag:
+
+      $ ssh user@host -Y
+
+- If your local machine is running Linux, adjust the permission of the X server
+  host:
+
+      $ sudo apt-get install x11-xserver-utils
+      $ xhost +local:root
+
+- If your local machine is running macOS:
+
+  - Do this once:
+
+    - Install the latest [XQuartz](https://www.xquartz.org/) version and run it.
+    - Activate the option
+      "[Allow connections from network clients](https://blogs.oracle.com/oraclewebcentersuite/running-gui-applications-on-native-docker-containers-for-mac)"
+      in XQuartz settings.
+    - Quit and restart XQuartz to activate the setting.
+
+  - Then, in the host machine:
+
+         $ xhost + 127.0.0.1
+
+Enjoy!
