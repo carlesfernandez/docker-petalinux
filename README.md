@@ -14,7 +14,8 @@ A somehow generic Xilinx PetaLinux & Vivado docker file, using Ubuntu (though
 some tweaks might be possible for Windows).
 
 It was successfully tested with version `2018.3` and `2019.1`, _which is the
-last version handled by this release_.
+last version handled by this release_. For more recent versions, please check
+[docker-petalinux2](https://github.com/carlesfernandez/docker-petalinux2).
 
 > Inspired by
 > [docker-petalinux](https://github.com/matthieu-labas/docker-petalinux),
