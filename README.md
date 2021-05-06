@@ -182,3 +182,16 @@ Now you can try it:
     petalinux@host:/path/to/petalinux_project# vivado
 
 Enjoy!
+
+## Copyright and License
+
+Copyright: &copy; 2020 Carles Fern&aacute;ndez-Prades. All rights reserved.
+
+The content of this repository is published under the [MIT](./LICENSE) license.
+
+## Acknowledgements
+
+This work was partially supported by the Spanish Ministry of Science,
+Innovation, and Universities through the Statistical Learning and Inference for
+Large Dimensional Communication Systems (ARISTIDES, RTI2018-099722-B-I00)
+project.
