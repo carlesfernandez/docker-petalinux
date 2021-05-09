@@ -26,7 +26,7 @@ last version handled by this release_. For more recent versions, please check
 
 ### Petalinux installer
 
-The PetaLinux Installer is to be downloaded from the
+The PetaLinux installer needs to be downloaded from the
 [Xilinx's Embedded Design Tools website](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-design-tools.html).
 It needs to be prepared for unattended installation.
 
@@ -49,7 +49,7 @@ Run:
 
 ### Vivado installer
 
-The Vivado is to be downloaded from the
+The Vivado installer needs to be downloaded from the
 [Xilinx's Vivado Design Tools website](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools.html).
 Go there and choose the All OS installer Single-File Download (TAR/GZIP).
 
@@ -74,10 +74,10 @@ The `docker_build.sh` will automatically spawn a simple HTTP server to serve the
 installer instead of copying it to the docker images (especially pushing them to
 the Docker daemon. Big space/time saver).
 
-The image takes a long time to build (up to a couple hours, depending on disk
-space and system use), but should succeed.
+The image takes a long time to build (on the order of hours, depending on disk
+space and system use) but should succeed.
 
-It weights around 45 GB.
+It weighs around 45 GB.
 
 ### Parameters
 
@@ -95,7 +95,7 @@ Several arguments can be provided to customize the build, with `--build-arg`:
 - `PETALINUX_INSTALLER` is the PetaLinux installer file. <br/>Defaults to
   `${PETALINUX_BASE}-installer.run`
 
-- `HTTP_SERV` is the HTTP server serving both SDK and PetaLinux installer.
+- `HTTP_SERV` is the HTTP server serving both SDK and PetaLinux installers.
   <br/>Defaults to `http://172.17.0.1:8000/resources`.
 
 - `XXXX_XXXX` is the identifier of the Vivado Installer (which name is
