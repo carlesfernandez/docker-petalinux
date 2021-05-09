@@ -33,7 +33,7 @@ It needs to be prepared for unattended installation.
 Run the installer and save the `petalinux-vXXX.X-final-installer.run` file in
 `./resources/`
 
-We need to patch the Petalinux installer so it does not ask to accept licences.
+We need to patch the Petalinux installer so it does not ask to accept licenses.
 
 > N.B. I'm not sure it's completely legal; but I haven't been able to script an
 > `expect` to automatically accept them (which might not be legal as well
@@ -185,7 +185,8 @@ Enjoy!
 
 ## Copyright and License
 
-Copyright: &copy; 2020 Carles Fern&aacute;ndez-Prades. All rights reserved.
+Copyright: &copy; 2020 Carles Fern&aacute;ndez-Prades,
+[CTTC](http://www.cttc.es/). All rights reserved.
 
 The content of this repository is published under the [MIT](./LICENSE) license.
 
