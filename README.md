@@ -95,7 +95,7 @@ Several arguments can be provided to customize the build, with `--build-arg`:
 - `PETALINUX_INSTALLER` is the PetaLinux installer file. <br/>Defaults to
   `${PETALINUX_BASE}-installer.run`
 
-- `HTTP_SERV` is the HTTP server serving both SDK and PetaLinux installers.
+- `HTTP_SERV` is the HTTP server serving both Vivado and PetaLinux installers.
   <br/>Defaults to `http://172.17.0.1:8000/resources`.
 
 - `XXXX_XXXX` is the identifier of the Vivado Installer (which name is
