@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 FROM ubuntu:16.04
+LABEL version="1.0" description="PetaLinux and Vivado image" maintainer="carles.fernandez@cttc.es"
 
 RUN dpkg --add-architecture i386 && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   autoconf \
