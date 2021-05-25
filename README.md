@@ -64,11 +64,14 @@ Please place this file in the `./resources/` folder.
 
 Run:
 
-    ./docker_build.sh <VERSION>
+    ./docker_build.sh <VERSION> <XXXX_XXXX>
 
-> `<VERSION>` can be `2018.3` or `2019.1`, ... Corresponding petalinux installer
-> is expected to be found in a `./resources` directory. The default for
+> `<VERSION>` can be `2018.3` or `2019.1`. The corresponding petalinux installer
+> is expected to be found in the `./resources` directory. The default for
 > `<VERSION>`, if not specified, is `2018.3`.
+
+> `<XXXX_XXXX>` is the Vivado installer build number. If not specified, it
+> defaults to `1207_2324`.
 
 The `docker_build.sh` will automatically spawn a simple HTTP server to serve the
 installer instead of copying it to the docker images (especially pushing them to

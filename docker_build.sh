@@ -5,6 +5,9 @@
 # Default version 2018.3
 XILVER=${1:-2018.3}
 
+# Default Vivado build number
+XXXX_XXXX=${2:-1207_2324}
+
 # Check if the petalinux installer exists
 PLNX="resources/petalinux-v${XILVER}-final-installer.run"
 if [ ! -f "$PLNX" ] ; then
@@ -26,5 +29,5 @@ if ! ps -fC python | grep "$PYTHONHTTP" > /dev/null ; then
 fi
 
 echo "Creating Docker image petalinux:$XILVER..."
-time docker build . -t petalinux:$XILVER --build-arg XILVER=${XILVER}
+time docker build . -t petalinux:$XILVER --build-arg XILVER=${XILVER} --build-arg XXXX_XXXX=${XXXX_XXXX}
 [ -n "$HTTPID" ] && kill $HTTPID && echo "Killed HTTP Server"

@@ -3,18 +3,6 @@
 
 FROM ubuntu:16.04
 
-# The Xilinx toolchain version
-ARG XILVER=2018.3
-ARG XXXX_XXXX=1207_2324
-
-# The PetaLinux base. We expect ${PETALINUX_BASE}-installer.run to be the patched installer.
-# PetaLinux will be installed in /opt/${PETALINX_BASE}
-# File is expected in the "./resources" subdirectory
-ARG PETALINUX_BASE=petalinux-v${XILVER}-final
-
-# The PetaLinux runnable installer
-ARG PETALINUX_INSTALLER=${PETALINUX_BASE}-installer.run
-
 RUN dpkg --add-architecture i386 && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   autoconf \
   bison \
@@ -88,6 +76,14 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
+# The Xilinx toolchain version
+ARG XILVER=2018.3
+
+# The PetaLinux base. We expect ${PETALINUX_BASE}-installer.run to be the patched installer.
+# PetaLinux will be installed in /opt/${PETALINX_BASE}
+# File is expected in the "./resources" subdirectory
+ARG PETALINUX_BASE=petalinux-v${XILVER}-final
+
 # Add user 'petalinux' with password 'petalinux' and give it access to install directory /opt
 RUN useradd -m -G dialout,sudo -p '$6$wiu9XEXx$ITRrMySAw1SXesQcP.Bm3Su2CuaByujc6Pb7Ztf4M9ES2ES7laSRwdcbgG96if4slduUxyjqvpEq2I0OhxKCa1' petalinux \
   && chmod +w /opt \
@@ -109,6 +105,9 @@ USER petalinux
 # The HTTP server to retrieve the files from.
 ARG HTTP_SERV=http://172.17.0.1:8000/resources
 
+# The PetaLinux runnable installer
+ARG PETALINUX_INSTALLER=${PETALINUX_BASE}-installer.run
+
 # Install PetaLinux
 RUN echo "" | sudo -S chown -R petalinux:petalinux . \
   && wget -q ${HTTP_SERV}/${PETALINUX_INSTALLER} \
@@ -116,6 +115,9 @@ RUN echo "" | sudo -S chown -R petalinux:petalinux . \
   && SKIP_LICENSE=y ./${PETALINUX_FILE}${PETALINUX_INSTALLER} /opt/${PETALINUX_BASE} \
   && rm -f ./${PETALINUX_INSTALLER} \
   && rm -f petalinux_installation_log
+
+# The Vivado build number
+ARG XXXX_XXXX=1207_2324
 
 # Install Vivado
 # Files are expected in the "./resources" subdirectory
