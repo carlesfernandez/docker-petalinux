@@ -1,8 +1,8 @@
 # SPDX-FileCopyrightText: 2020, Carles Fernandez-Prades <carles.fernandez@cttc.es>
 # SPDX-License-Identifier: MIT
 
-FROM ubuntu:16.04
-LABEL version="1.0" description="PetaLinux and Vivado image" maintainer="carles.fernandez@cttc.es"
+FROM ubuntu:18.04
+LABEL version="2.0" description="PetaLinux and Vivado image" maintainer="carles.fernandez@cttc.es"
 
 RUN dpkg --add-architecture i386 && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   autoconf \
@@ -16,7 +16,7 @@ RUN dpkg --add-architecture i386 && apt-get update && DEBIAN_FRONTEND=noninterac
   fakeroot \
   flex \
   gawk \
-  gcc-4.8 \
+  gcc-7 \
   gcc-multilib \
   git \
   gnupg \
@@ -39,7 +39,7 @@ RUN dpkg --add-architecture i386 && apt-get update && DEBIAN_FRONTEND=noninterac
   net-tools \
   pax \
   python3-gi \
-  python3.4 \
+  python3.6 \
   rsync \
   screen \
   socat \
@@ -58,9 +58,7 @@ RUN dpkg --add-architecture i386 && apt-get update && DEBIAN_FRONTEND=noninterac
   xvfb \
   zlib1g-dev \
   zlib1g-dev:i386 \
-  && update-alternatives --install /usr/bin/python python /usr/bin/python2.7 2 \
-  && add-apt-repository ppa:deadsnakes/ppa && apt update \
-  && apt-get install -y python3.6 && update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1 \
+  && update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1 \
   && apt-get autoremove --purge && apt-get autoclean && update-alternatives --auto python
 
 # Install the repo tool to handle git submodules (meta layers) comfortably.
