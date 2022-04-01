@@ -145,9 +145,10 @@ RUN echo "/usr/sbin/in.tftpd --foreground --listen --address [::]:69 --secure /t
   && echo ". /opt/Xilinx/Vivado/${XILVER}/settings64.sh" >> /etc/profile \
   && echo ". /etc/profile" >> /root/.profile
 
-# If 2018.3, apply perf patch
-RUN if [ "$XILVER" = "2018.3" ] ; then \
-  sed -i 's/virtual\/kernel\:do\_patch/virtual\/kernel\:do\_shared\_workdir/g' /opt/petalinux-v2018.3-final/components/yocto/source/arm/layers/core/meta/classes/kernelsrc.bbclass ; \
+# Apply perf patch
+RUN if [ "$XILVER" = "2018.3" ] || [ "$XILVER" = "2019.1" ] || [ "$XILVER" = "2019.2" ]; then \
+  sed -i 's/virtual\/kernel\:do\_patch/virtual\/kernel\:do\_shared\_workdir/g' /opt/petalinux-v${XILVER}-final/components/yocto/source/arm/layers/core/meta/classes/kernelsrc.bbclass \
+  && sed -i 's/virtual\/kernel\:do\_patch/virtual\/kernel\:do\_shared\_workdir/g' /opt/petalinux-v${XILVER}-final/components/yocto/source/aarch64/layers/core/meta/classes/kernelsrc.bbclass ; \
   fi
 
 EXPOSE 69/udp
