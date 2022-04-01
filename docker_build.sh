@@ -2,11 +2,11 @@
 # SPDX-FileCopyrightText: 2020, Carles Fernandez-Prades <carles.fernandez@cttc.es>
 # SPDX-License-Identifier: MIT
 
-# Default version 2018.3
-XILVER=${1:-2018.3}
+# Default version 2019.1
+XILVER=${1:-2019.1}
 
 # Default Vivado build number
-XXXX_XXXX=${2:-1207_2324}
+XXXX_XXXX=${2:-0524_1430}
 
 # Check if the petalinux installer exists
 PLNX="resources/petalinux-v${XILVER}-final-installer.run"

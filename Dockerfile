@@ -76,7 +76,7 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 # The Xilinx toolchain version
-ARG XILVER=2018.3
+ARG XILVER=2019.1
 
 # The PetaLinux base. We expect ${PETALINUX_BASE}-installer.run to be the patched installer.
 # PetaLinux will be installed in /opt/${PETALINX_BASE}
@@ -116,7 +116,7 @@ RUN echo "" | sudo -S chown -R petalinux:petalinux . \
   && rm -f petalinux_installation_log
 
 # The Vivado build number
-ARG XXXX_XXXX=1207_2324
+ARG XXXX_XXXX=0524_1430
 
 # Install Vivado
 # Files are expected in the "./resources" subdirectory
