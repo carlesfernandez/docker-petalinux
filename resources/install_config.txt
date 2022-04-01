@@ -5,7 +5,7 @@ Edition=Vivado HL System Edition
 Destination=/opt/Xilinx
 
 # Choose the Products/Devices that you would like to install.
-Modules=Vivado Design Suite:0,Engineering Sample Devices:0,Virtex UltraScale+ 58G ES:0,Zynq UltraScale+ MPSoC ES:0,Model Composer:0,Virtex UltraScale+ HBM ES:0,Zynq UltraScale+ RFSoC ES:0
+Modules=Vivado Design Suite:0,Engineering Sample Devices:0,Virtex UltraScale+ 58G ES:0,Model Composer:0,Virtex UltraScale+ HBM ES:0,Zynq UltraScale+ RFSoC ES:0
 
 # Choose the post install scripts you'd like to run as part of the finalization step. Please note that some of these scripts may require user interaction during runtime.
 InstallOptions=Enable WebTalk for SDK to send usage statistics to Xilinx:0

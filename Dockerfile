@@ -1,8 +1,8 @@
 # SPDX-FileCopyrightText: 2020, Carles Fernandez-Prades <carles.fernandez@cttc.es>
 # SPDX-License-Identifier: MIT
 
-FROM ubuntu:16.04
-LABEL version="1.0" description="PetaLinux and Vivado image" maintainer="carles.fernandez@cttc.es"
+FROM ubuntu:18.04
+LABEL version="2.0" description="PetaLinux and Vivado image" maintainer="carles.fernandez@cttc.es"
 
 RUN dpkg --add-architecture i386 && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   autoconf \
@@ -16,7 +16,7 @@ RUN dpkg --add-architecture i386 && apt-get update && DEBIAN_FRONTEND=noninterac
   fakeroot \
   flex \
   gawk \
-  gcc-4.8 \
+  gcc-7 \
   gcc-multilib \
   git \
   gnupg \
@@ -39,7 +39,7 @@ RUN dpkg --add-architecture i386 && apt-get update && DEBIAN_FRONTEND=noninterac
   net-tools \
   pax \
   python3-gi \
-  python3.4 \
+  python3.6 \
   rsync \
   screen \
   socat \
@@ -58,9 +58,7 @@ RUN dpkg --add-architecture i386 && apt-get update && DEBIAN_FRONTEND=noninterac
   xvfb \
   zlib1g-dev \
   zlib1g-dev:i386 \
-  && update-alternatives --install /usr/bin/python python /usr/bin/python2.7 2 \
-  && add-apt-repository ppa:deadsnakes/ppa && apt update \
-  && apt-get install -y python3.6 && update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1 \
+  && update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1 \
   && apt-get autoremove --purge && apt-get autoclean && update-alternatives --auto python
 
 # Install the repo tool to handle git submodules (meta layers) comfortably.
@@ -78,7 +76,7 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 # The Xilinx toolchain version
-ARG XILVER=2018.3
+ARG XILVER=2019.1
 
 # The PetaLinux base. We expect ${PETALINUX_BASE}-installer.run to be the patched installer.
 # PetaLinux will be installed in /opt/${PETALINX_BASE}
@@ -118,7 +116,7 @@ RUN echo "" | sudo -S chown -R petalinux:petalinux . \
   && rm -f petalinux_installation_log
 
 # The Vivado build number
-ARG XXXX_XXXX=1207_2324
+ARG XXXX_XXXX=0524_1430
 
 # Install Vivado
 # Files are expected in the "./resources" subdirectory
@@ -147,9 +145,10 @@ RUN echo "/usr/sbin/in.tftpd --foreground --listen --address [::]:69 --secure /t
   && echo ". /opt/Xilinx/Vivado/${XILVER}/settings64.sh" >> /etc/profile \
   && echo ". /etc/profile" >> /root/.profile
 
-# If 2018.3, apply perf patch
-RUN if [ "$XILVER" = "2018.3" ] ; then \
-  sed -i 's/virtual\/kernel\:do\_patch/virtual\/kernel\:do\_shared\_workdir/g' /opt/petalinux-v2018.3-final/components/yocto/source/arm/layers/core/meta/classes/kernelsrc.bbclass ; \
+# Apply perf patch
+RUN if [ "$XILVER" = "2018.3" ] || [ "$XILVER" = "2019.1" ] || [ "$XILVER" = "2019.2" ]; then \
+  sed -i 's/virtual\/kernel\:do\_patch/virtual\/kernel\:do\_shared\_workdir/g' /opt/petalinux-v${XILVER}-final/components/yocto/source/arm/layers/core/meta/classes/kernelsrc.bbclass \
+  && sed -i 's/virtual\/kernel\:do\_patch/virtual\/kernel\:do\_shared\_workdir/g' /opt/petalinux-v${XILVER}-final/components/yocto/source/aarch64/layers/core/meta/classes/kernelsrc.bbclass ; \
   fi
 
 EXPOSE 69/udp
