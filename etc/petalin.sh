@@ -26,7 +26,7 @@ if [ "$SET_DOCKER_COMMAND" ]
    then
         echo "$@" > ./command.sh
         chmod +x ./command.sh
-        OVERRIDE_ENTRYPOINT="--entrypoint /bin/sh"
+        OVERRIDE_ENTRYPOINT="--entrypoint /bin/bash"
         SET_DOCKER_COMMAND="-l -c ./command.sh"
 fi
 
