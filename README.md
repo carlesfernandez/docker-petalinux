@@ -22,9 +22,13 @@ last version handled by this release_. For more recent versions, please check
 > [docker-xilinx-petalinux-desktop](https://github.com/JamesAnthonyLow/docker-xilinx-petalinux-desktop)
 > and [petalinux-docker](https://github.com/xaljer/petalinux-docker).
 
+For PetaLinux Tools 2018.3, please use the [`Xilinx_2018.3`](https://github.com/carlesfernandez/docker-petalinux/tree/Xilinx_2018.3) branch.
+
+For PetaLinux Tools 2019.1, please use the [`Xilinx_2019.1`](https://github.com/carlesfernandez/docker-petalinux/tree/Xilinx_2019.1) branch.
+
 ## Prepare installers
 
-### Petalinux installer
+### PetaLinux installer
 
 The PetaLinux installer needs to be downloaded from the
 [Xilinx's Embedded Design Tools website](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-design-tools.html).
@@ -33,7 +37,7 @@ It needs to be prepared for unattended installation.
 Run the installer and save the `petalinux-vXXX.X-final-installer.run` file in
 `./resources/`
 
-We need to patch the Petalinux installer so it does not ask to accept licenses.
+We need to patch the PetaLinux installer so it does not ask to accept licenses.
 
 > N.B. I'm not sure it's completely legal; but I haven't been able to script an
 > `expect` to automatically accept them (which might not be legal as well
@@ -90,7 +94,7 @@ Several arguments can be provided to customize the build, with `--build-arg`:
   `${HTTP_SERVER}/petalinux-v${XILVER}-final-installer.run` for the PetaLinux
   installer (unless `PETALINUX_INSTALLER` is given). <br/>Defaults to `2018.3`.
 
-- `PETALINUX_BASE` is the name of the PetaLinux base. Petalinux will be
+- `PETALINUX_BASE` is the name of the PetaLinux base. PetaLinux will be
   installed in `/opt/${PETALINUX_BASE}` and the installer is expected to be
   sourced from `resources/${PETALINUX_BASE}-installer.run`. <br/>Defaults to
   `petalinux-v${XILVER}-final`.
@@ -112,7 +116,7 @@ You can fully customize the installation by manually running e.g.:
         --build-arg PETALINUX_INSTALLER=petalinux/petalinux-v2018.3-final-patched.run \
         --build-arg HTTP_SERV=https://local.company.com/installers
 
-Petalinux will be retrieved at
+PetaLinux will be retrieved at
 `https://local.company.com/installers/petalinux/petalinux-v2018.3-final-patched.run`
 
 ## Work with a PetaLinux project
@@ -127,8 +131,8 @@ and Vivado `settings64.sh` already sourced_, so you can directly execute
 `petalinux-*` commands and Vivado.
 
     user@host:/path/to/petalinux_project$ /path/to/petalin.sh
-    petalinux@host:/path/to/petalinux_project# petalinux-build
-    petalinux@host:/path/to/petalinux_project# vivado
+    petalinux@host:/path/to/petalinux_project$ petalinux-build
+    petalinux@host:/path/to/petalinux_project$ vivado
 
 Otherwise, the arguments will be executed as a command. Example:
 
@@ -141,13 +145,13 @@ See section down below.
 If you want to use `repo`, you will need to switch to Python 3.6, and then
 switch back to Python2.7 after using it:
 
-    # sudo update-alternatives --config python
+    $ sudo update-alternatives --config python
 
 Select Python 3.6 (option number 2), and then use `repo` (`repo init ...`,
 `repo sync`). When finished, switch back to Python 2.7 in order to use the
 `petalinux-*` commands:
 
-    # sudo update-alternatives --auto python
+    $ sudo update-alternatives --auto python
 
 ## Using Vivado graphical interface
 
@@ -182,7 +186,7 @@ interface before running the Docker container.
 Now you can try it:
 
     user@host:/path/to/petalinux_project$ /path/to/petalin.sh
-    petalinux@host:/path/to/petalinux_project# vivado
+    petalinux@host:/path/to/petalinux_project$ vivado
 
 Enjoy!
 

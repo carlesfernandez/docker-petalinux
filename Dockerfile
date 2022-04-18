@@ -6,6 +6,7 @@ LABEL version="2.0" description="PetaLinux and Vivado image" maintainer="carles.
 
 RUN dpkg --add-architecture i386 && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   autoconf \
+  bc \
   bison \
   build-essential \
   chrpath \
@@ -68,8 +69,7 @@ ADD https://storage.googleapis.com/git-repo-downloads/repo /usr/local/bin/
 RUN chmod 755 /usr/local/bin/repo
 
 RUN echo "%sudo ALL=(ALL:ALL) ALL" >> /etc/sudoers \
-  && echo "%sudo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
-  && ln -fs /bin/bash /bin/sh
+  && echo "%sudo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Set locale
 RUN locale-gen en_US.UTF-8
@@ -98,6 +98,13 @@ RUN mkdir -p /tftpboot && chmod 666 /tftpboot \
   && sed -i 's/TFTP\_USERNAME\=\"tftp\"/TFTP\_USERNAME\=\"petalinux\"/g' /etc/default/tftpd-hpa \
   && sed -i 's/var\/lib\/tftpboot/tftpboot/g' /etc/default/tftpd-hpa \
   && sed -i 's/secure/secure \-\-create/g' /etc/default/tftpd-hpa
+
+# set bash as default shell
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+
+# not really necessary, just to make it easier to install packages on the run...
+RUN echo "root:petalinux" | chpasswd
 
 # Install under /opt, with user petalinux
 WORKDIR /opt
@@ -154,11 +161,11 @@ RUN if [ "$XILVER" = "2018.3" ] || [ "$XILVER" = "2019.1" ] || [ "$XILVER" = "20
   fi
 
 EXPOSE 69/udp
-
+ENV SHELL /bin/bash
 USER petalinux
 
 RUN export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/Xilinx/Vivado/${XILVER}/lib/lnx64.o/
 
 # incorporate Vivado license file or ENV LM_LICENSE_SERVER=portNum@ipAddrOfLicenseServer
 
-ENTRYPOINT ["/bin/sh", "-l"]
+ENTRYPOINT ["/bin/bash", "-l"]
