@@ -193,7 +193,7 @@ Enjoy!
 ## Copyright and License
 
 Copyright: &copy; 2020 Carles Fern&aacute;ndez-Prades,
-[CTTC](http://www.cttc.es/). All rights reserved.
+[CTTC](https://www.cttc.cat). All rights reserved.
 
 The content of this repository is published under the [MIT](./LICENSE) license.
 
