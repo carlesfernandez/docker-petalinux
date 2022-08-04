@@ -6,33 +6,35 @@
 
 latest=$(docker image list | grep ^petalinux | awk '{ print $2 }' | sort | tail -1)
 echo "Starting petalinux:$latest"
-mkdir -p $PWD/tftpboot
+mkdir -p "$PWD"/tftpboot
 
-SET_MIRROR_PATH=""
-if [ $GENIUX_MIRROR_PATH ]
+SET_MIRROR_PATH_AUX=""
+if [ "$GENIUX_MIRROR_PATH" ]
     then
-        SET_MIRROR_PATH="-v $GENIUX_MIRROR_PATH:/source_mirror"
+        SET_MIRROR_PATH_AUX="-v $GENIUX_MIRROR_PATH:/source_mirror"
 fi
+IFS=" " read -r -a SET_MIRROR_PATH <<< "$SET_MIRROR_PATH_AUX"
 
-SET_X_SERVER=""
-if [ $DISPLAY ]
+if [ "$DISPLAY" ]
     then
-        SET_X_SERVER="-e DISPLAY=$DISPLAY --net=host -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME/.Xauthority:/home/petalinux/.Xauthority"
+        SET_X_SERVER_AUX="-e DISPLAY=$DISPLAY --net=host -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME/.Xauthority:/home/petalinux/.Xauthority"
 fi
+IFS=" " read -r -a SET_X_SERVER <<< "$SET_X_SERVER_AUX"
 
-SET_DOCKER_COMMAND=$@
-OVERRIDE_EXTRYPOINT=""
-if [ "$SET_DOCKER_COMMAND" ]
+SET_DOCKER_COMMAND_AUX=$*
+if [ "${SET_DOCKER_COMMAND_AUX[0]}" ]
    then
         echo "$@" > ./command.sh
         chmod +x ./command.sh
-        OVERRIDE_ENTRYPOINT="--entrypoint /bin/bash"
-        SET_DOCKER_COMMAND="-l -c ./command.sh"
+        OVERRIDE_ENTRYPOINT_AUX="--entrypoint /bin/bash"
+        SET_DOCKER_COMMAND_AUX="-l -c ./command.sh"
 fi
+IFS=" " read -r -a OVERRIDE_ENTRYPOINT <<< "$OVERRIDE_ENTRYPOINT_AUX"
+IFS=" " read -r -a SET_DOCKER_COMMAND <<< "$SET_DOCKER_COMMAND_AUX"
 
-docker run -ti $SET_X_SERVER $SET_MIRROR_PATH  -v "$PWD":"$PWD" -v "$PWD/tftpboot":/tftpboot -w "$PWD" --rm -u petalinux $OVERRIDE_ENTRYPOINT petalinux:$latest $SET_DOCKER_COMMAND
+docker run -ti "${SET_X_SERVER[@]}" "${SET_MIRROR_PATH[@]}"  -v "$PWD":"$PWD" -v "$PWD/tftpboot":/tftpboot -w "$PWD" --rm -u petalinux "${OVERRIDE_ENTRYPOINT[@]}" petalinux:"${latest}" "${SET_DOCKER_COMMAND[@]}"
 
-if [ "$SET_DOCKER_COMMAND" ]
+if [ -n "$OVERRIDE_ENTRYPOINT_AUX" ]
     then
         rm ./command.sh
 fi
