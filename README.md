@@ -138,16 +138,11 @@ Otherwise, the arguments will be executed as a command. Example:
 For Vivado, you might need some tweaking to get the graphical interface working.
 See section down below.
 
-If you want to use `repo`, you will need to switch to Python 3.6, and then
-switch back to Python2.7 after using it:
+If you want to use `repo`, you will need to use `/usr/local/bin/python3.11`:
 
-    # sudo update-alternatives --config python
-
-Select Python 3.6 (option number 2), and then use `repo` (`repo init ...`,
-`repo sync`). When finished, switch back to Python 2.7 in order to use the
-`petalinux-*` commands:
-
-    # sudo update-alternatives --auto python
+    # /usr/local/bin/python3.11 /usr/local/bin/repo \
+    init -u https://github.com/carlesfernandez/oe-gnss-sdr-manifest.git \
+    -b rocko
 
 ## Using Vivado graphical interface
 
