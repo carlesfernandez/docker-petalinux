@@ -24,12 +24,18 @@ RUN dpkg --add-architecture i386 && apt-get update && DEBIAN_FRONTEND=noninterac
   gzip \
   iproute2 \
   less \
+  libbz2-dev \
+  libffi-dev \
+  libgdbm-dev \
   libglib2.0-dev \
   libgtk2.0-0 \
   libgtk2.0-dev \
   libncurses5-dev \
+  libnss3-dev \
+  libreadline-dev \
   libsdl1.2-dev \
   libselinux1 \
+  libsqlite3-dev \
   libssl-dev \
   libtool \
   libtool-bin \
@@ -39,6 +45,7 @@ RUN dpkg --add-architecture i386 && apt-get update && DEBIAN_FRONTEND=noninterac
   nano \
   net-tools \
   pax \
+  pkg-config \
   python3-gi \
   python3.6 \
   rsync \
@@ -76,6 +83,12 @@ RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
+
+# Build and install Python 3.11, required by repo
+RUN wget https://www.python.org/ftp/python/3.11.4/Python-3.11.4.tgz \
+  && tar -xf Python-3.11.*.tgz && cd Python-3.11.*/ \
+  && ./configure --enable-optimizations && make && make altinstall \
+  && cd .. && rm Python-3.11.*.tgz && rm -rf Python-3.11.*/
 
 # The Xilinx toolchain version
 ARG XILVER=2019.1
@@ -141,9 +154,9 @@ RUN mkdir -p /opt/Xilinx/tmp \
   && cd Xilinx_Vivado_SDK_${XILVER}_${XXXX_XXXX} \
   && chmod a+x xsetup \
   && ./xsetup \
-    --agree XilinxEULA,3rdPartyEULA,WebTalkTerms \
-    --config $XLNX_VIVADO_BATCH_CONFIG_FILE \
-    --batch INSTALL \
+  --agree XilinxEULA,3rdPartyEULA,WebTalkTerms \
+  --config $XLNX_VIVADO_BATCH_CONFIG_FILE \
+  --batch INSTALL \
   && cd $HOME_DIR \
   && rm -rf /opt/Xilinx/tmp
 
