@@ -15,15 +15,25 @@ if [ ! -f "$PLNX" ] ; then
     exit 1
 fi
 
+# Check python command
+PYTHON_CMD=$(command -v python 2>/dev/null || \
+             command -v python3 2>/dev/null || \
+             command -v "$(compgen -c | grep -E '^python3([0-9]+)?(\.[0-9]+)?$' | sort -V | tail -1)" 2>/dev/null)
+
+if [ -z "$PYTHON_CMD" ]; then
+    echo "Error: No Python interpreter found." >&2
+    exit 1
+fi
+
 # Check HTTP server is running
-PYTHONV=$(python --version 2>&1 | cut -f2 -d' ')
+PYTHONV=$($PYTHON_CMD --version 2>&1 | cut -f2 -d' ')
 case $PYTHONV in
     3*) PYTHONHTTP="http.server" ;;
     *) PYTHONHTTP="SimpleHTTPServer" ;;
 esac
 # shellcheck disable=SC2009
-if ! ps -fC python | grep "$PYTHONHTTP" > /dev/null ; then
-    python -m "$PYTHONHTTP" &
+if ! ps -fC $PYTHON_CMD | grep "$PYTHONHTTP" > /dev/null ; then
+    $PYTHON_CMD -m "$PYTHONHTTP" &
     HTTPID=$!
     echo "HTTP Server started as PID $HTTPID"
     trap 'kill $HTTPID' EXIT QUIT SEGV INT HUP TERM ERR
